@@ -26,10 +26,10 @@
 
     function sizeClass(count, max) {
         const ratio = count / max;
-        if (ratio > 0.5) return 'text-lg px-5 py-2.5';
-        if (ratio > 0.2) return 'text-base px-4 py-2';
-        if (ratio > 0.08) return 'text-sm px-3.5 py-1.5';
-        return 'text-xs px-3 py-1.5';
+        if (ratio > 0.5) return 'text-lg px-5 py-3';
+        if (ratio > 0.2) return 'text-base px-4 py-2.5';
+        if (ratio > 0.08) return 'text-sm px-3.5 py-2';
+        return 'text-xs px-3 py-2';
     }
 </script>
 
@@ -46,7 +46,7 @@
         </a>
 
         <div class="mb-12">
-            <h1 class="text-5xl md:text-7xl font-black tracking-tighter uppercase text-white drop-shadow-lg mb-4">
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-black tracking-tighter uppercase text-white drop-shadow-lg mb-4">
                 Browse by <span class="text-zinc-600">Tag</span>
             </h1>
             <p class="text-fuchsia-500 text-sm font-black tracking-[0.2em] uppercase">

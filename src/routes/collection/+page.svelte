@@ -45,7 +45,7 @@
     <div class="max-w-7xl mx-auto relative z-10">
 
         <div class="mb-12">
-            <h1 class="text-5xl md:text-7xl font-black tracking-tighter uppercase text-white drop-shadow-lg mb-4">
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-black tracking-tighter uppercase text-white drop-shadow-lg mb-4">
                 My <span class="text-zinc-600">Collection</span>
             </h1>
             <p class="text-zinc-500 text-sm font-bold tracking-widest uppercase">
@@ -93,7 +93,7 @@
                                 {/if}
                             </a>
                             <button onclick={() => toggleOwned(game.slug)}
-                                    class="absolute top-2 right-2 bg-black/70 hover:bg-red-950/80 border border-white/10 hover:border-red-500/50 text-zinc-400 hover:text-red-400 text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                                    class="absolute top-2 right-2 bg-black/70 hover:bg-red-950/80 border border-white/10 hover:border-red-500/50 text-zinc-400 hover:text-red-400 text-[9px] font-black uppercase tracking-widest px-3 py-2 rounded opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
                                 Remove
                             </button>
                         </div>

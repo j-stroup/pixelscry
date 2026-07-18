@@ -56,7 +56,7 @@
         </a>
 
         <div class="mb-12">
-            <h1 class="text-5xl md:text-7xl font-black tracking-tighter uppercase text-white drop-shadow-lg mb-4 capitalize">
+            <h1 class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black tracking-tighter uppercase text-white drop-shadow-lg mb-4 capitalize">
                 {data.category.split(':')[1]} <span class="text-zinc-600">Games</span>
             </h1>
             <p class="text-fuchsia-500 text-sm font-black tracking-[0.2em] uppercase">
@@ -70,8 +70,8 @@
                 <div class="mt-3 flex flex-wrap gap-2">
                     {#each data.facets.slice(0, 12) as facet}
                         <a href={facetHref(facet.name)}
-                           class="bg-zinc-900/80 hover:bg-fuchsia-500 border border-white/10 hover:border-transparent text-zinc-400 hover:text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-lg transition-colors duration-300">
-                            {facet.name} <span class="opacity-50">({facet.count})</span>
+                           class="inline-flex items-center min-h-[44px] bg-zinc-900/80 hover:bg-fuchsia-500 border border-white/10 hover:border-transparent text-zinc-400 hover:text-white text-[10px] font-bold uppercase tracking-widest px-3.5 rounded-lg transition-colors duration-300">
+                            {facet.name} <span class="opacity-50 ml-1">({facet.count})</span>
                         </a>
                     {/each}
                 </div>

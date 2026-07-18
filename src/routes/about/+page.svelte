@@ -18,7 +18,7 @@
     <div class="relative z-10 max-w-4xl mx-auto px-6">
         
         <header class="mb-16">
-            <h1 class="text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-br from-fuchsia-400 via-purple-500 to-violet-600 tracking-tighter drop-shadow-lg mb-4 uppercase">
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-br from-fuchsia-400 via-purple-500 to-violet-600 tracking-tighter drop-shadow-lg mb-4 uppercase">
                 Initialization
             </h1>
             <p class="text-zinc-500 text-xs md:text-sm tracking-[0.3em] font-black uppercase drop-shadow">The Architecture of PixelScry</p>

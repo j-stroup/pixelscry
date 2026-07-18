@@ -3,6 +3,7 @@ import { prisma } from '$lib/server/db.js';
 import { rawg } from '$lib/server/rawg.js';
 import { saveGameToCache } from '$lib/server/gameCache.js';
 import { buildBuyLinks } from '$lib/server/affiliateLinks.js';
+import { sanitizeDescription, htmlToPlainText } from '$lib/server/sanitizeDescription.js';
 
 export async function load({ params, setHeaders }) {
     const { slug } = params;
@@ -55,6 +56,8 @@ export async function load({ params, setHeaders }) {
         return {
             success: true,
             game: gameData,
+            descriptionHtml: sanitizeDescription(gameData.description),
+            descriptionText: htmlToPlainText(gameData.description) || gameData.description_raw || '',
             moreLikeThis,
             buyLinks: buildBuyLinks({
                 amazonTag: AMAZON_ASSOCIATE_TAG,

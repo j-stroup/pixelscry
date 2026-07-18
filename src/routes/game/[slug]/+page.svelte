@@ -38,8 +38,8 @@
 
     let canonicalPath = $derived(`/game/${game.slug}`);
     let metaDescription = $derived.by(() => {
-        if (game.description_raw) {
-            const trimmed = game.description_raw.trim();
+        if (data.descriptionText) {
+            const trimmed = data.descriptionText.trim();
             return trimmed.length > 155 ? `${trimmed.slice(0, 155)}…` : trimmed;
         }
         const year = getReleaseYear(game);
@@ -47,7 +47,7 @@
         return `${game.name}${year ? ` (${year})` : ''}${genreList ? ` — ${genreList}` : ''} on PixelScry.`;
     });
     let videoGameSchema = $derived(
-        data.success ? buildVideoGameSchema(game, `${SITE_URL}${canonicalPath}`) : null
+        data.success ? buildVideoGameSchema(game, `${SITE_URL}${canonicalPath}`, data.descriptionText) : null
     );
 
     // Theme Color Logic
@@ -197,7 +197,7 @@
 
                                 </div>
 
-                            <div class="flex-1 min-w-0"> <h1 class="text-5xl md:text-7xl font-black tracking-tighter uppercase mb-4 text-white drop-shadow-[0_4px_20px_rgba(var(--theme-rgb),0.3)]">
+                            <div class="flex-1 min-w-0"> <h1 class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black tracking-tighter uppercase mb-4 text-white drop-shadow-[0_4px_20px_rgba(var(--theme-rgb),0.3)]">
                     {game.name}
                 </h1>
 
@@ -243,9 +243,17 @@
                         <div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[rgba(var(--theme-rgb),0.8)] to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-500"></div>
 
                         <h3 class="text-zinc-500 text-[10px] uppercase font-black tracking-[0.2em] mb-3">Overview</h3>
-                        <p class="text-zinc-300 text-lg md:text-xl leading-relaxed font-medium">
-                            {game.description_raw || 'No summary available.'}
-                        </p>
+                        {#if data.descriptionHtml}
+                            <div class="prose prose-invert prose-lg max-w-none
+                                        prose-p:text-zinc-300 prose-p:leading-relaxed prose-p:font-medium
+                                        prose-headings:text-zinc-100 prose-headings:font-black prose-headings:uppercase prose-headings:tracking-wide prose-h3:text-lg
+                                        prose-strong:text-zinc-100 prose-a:text-fuchsia-400 hover:prose-a:text-fuchsia-300
+                                        prose-li:text-zinc-300 prose-blockquote:text-zinc-400 prose-blockquote:border-fuchsia-600/50">
+                                {@html data.descriptionHtml}
+                            </div>
+                        {:else}
+                            <p class="text-zinc-300 text-lg md:text-xl leading-relaxed font-medium">No summary available.</p>
+                        {/if}
 
                         <div class="mt-8 pt-6 border-t border-white/5 flex flex-wrap gap-2">
                             {#each game.genres || [] as genre}

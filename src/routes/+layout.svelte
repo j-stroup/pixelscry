@@ -1,6 +1,7 @@
 <script>
     import { onNavigate } from '$app/navigation';
     import '../app.css'; // This path is correct for src/app.css
+    import SiteHeader from '$lib/components/SiteHeader.svelte';
     let { children } = $props();
 
     onNavigate((navigation) => {
@@ -15,7 +16,9 @@
 </script>
 
 <div class="flex flex-col min-h-screen bg-black font-sans selection:bg-fuchsia-500/30">
-    
+
+    <SiteHeader />
+
     <div class="flex-grow">
         {@render children()}
     </div>

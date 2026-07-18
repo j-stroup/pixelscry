@@ -48,7 +48,7 @@
         </div>
 
         <div class="mb-12">
-            <h1 class="text-5xl md:text-7xl font-black tracking-tighter uppercase text-white drop-shadow-lg mb-4">
+            <h1 class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black tracking-tighter uppercase text-white drop-shadow-lg mb-4">
                 {data.genre} <span class="text-zinc-600">on {data.platform}</span>
             </h1>
             <p class="text-fuchsia-500 text-sm font-black tracking-[0.2em] uppercase">

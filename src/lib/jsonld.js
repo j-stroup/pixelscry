@@ -26,7 +26,7 @@ export function buildWebsiteSchema() {
     };
 }
 
-export function buildVideoGameSchema(game, url) {
+export function buildVideoGameSchema(game, url, plainTextDescription) {
     const platforms = (game.platforms || []).map((p) => p.platform?.name).filter(Boolean);
     const genres = (game.genres || []).map((g) => g.name);
     const ratingCount =
@@ -40,7 +40,7 @@ export function buildVideoGameSchema(game, url) {
         url
     };
 
-    if (game.description_raw) schema.description = game.description_raw;
+    if (plainTextDescription) schema.description = plainTextDescription;
     if (game.background_image) schema.image = game.background_image;
     if (genres.length) schema.genre = genres;
     if (platforms.length) schema.gamePlatform = platforms;
