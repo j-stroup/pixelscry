@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /collection
+Disallow: /api/
+
+# Hand Google the map we built earlier
+Sitemap: https://pixelscry.com/sitemap.xml

@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// Our Incremental Database Model
+model Game {
+  slug        String     @id
+  name        String
+  rawg_data   String
+  lastUpdated DateTime   @updatedAt
+  genres      Genre[]
+  platforms   Platform[]
+  tags        Tag[]
+}
+
+// Normalized so category pages can query by relation instead of
+// loading every cached game and filtering the parsed JSON in JS.
+model Genre {
+  // Lowercased so lookups from URL params stay case-insensitive
+  // (SQLite has no portable case-insensitive equality filter in Prisma).
+  nameLower String @id
+  name      String
+  games     Game[]
+}
+
+model Platform {
+  nameLower String @id
+  name      String
+  games     Game[]
+}
+
+// Powers the long-tail "co-op games" / "open world games" list pages —
+// English-language tags only (RAWG's tags are community-submitted across
+// many languages; storing every locale would fragment the same real-world
+// tag into duplicates).
+model Tag {
+  nameLower String @id
+  name      String
+  games     Game[]
+}
