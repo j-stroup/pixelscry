@@ -231,12 +231,15 @@
                 <p class="font-mono text-[11px] tracking-[0.14em] uppercase text-ink-faint mt-12 mb-4 pb-3 border-b border-line">More like this</p>
                 <div class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
                     {#each data.moreLikeThis as rec}
-                        <a href="/game/{rec.slug}" class="card-cut aspect-[3/4] bg-panel-2 border border-line hover:border-accent/60 transition-colors relative group overflow-hidden">
-                            {#if rec.background_image}
-                                <img src={rec.background_image} alt="{rec.name}" class="w-full h-full object-cover opacity-85 group-hover:opacity-100 transition-opacity" />
-                            {:else}
-                                <GameCoverFallback name={rec.name} />
-                            {/if}
+                        <a href="/game/{rec.slug}" class="card-cut block bg-panel-2 border border-line hover:border-accent/60 transition-colors group overflow-hidden">
+                            <div class="aspect-[3/4] w-full">
+                                {#if rec.background_image}
+                                    <img src={rec.background_image} alt="{rec.name}" class="w-full h-full object-cover opacity-85 group-hover:opacity-100 transition-opacity" />
+                                {:else}
+                                    <GameCoverFallback name={rec.name} />
+                                {/if}
+                            </div>
+                            <p class="font-sans font-medium text-xs text-ink-dim group-hover:text-ink truncate p-2 transition-colors">{rec.name}</p>
                         </a>
                     {/each}
                 </div>

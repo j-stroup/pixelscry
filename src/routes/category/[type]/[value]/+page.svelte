@@ -82,16 +82,19 @@
         {:else}
             <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-5">
                 {#each data.games as game}
-                    <a href="/game/{game.slug}" class="card-cut aspect-[3/4] bg-panel-2 border border-line hover:border-signal/60 transition-colors group relative overflow-hidden">
-                        {#if game.background_image}
-                            <img
-                                src={game.background_image}
-                                alt={game.name}
-                                class="w-full h-full object-cover opacity-85 group-hover:opacity-100 transition-opacity"
-                            />
-                        {:else}
-                            <GameCoverFallback name={game.name} />
-                        {/if}
+                    <a href="/game/{game.slug}" class="card-cut block bg-panel-2 border border-line hover:border-signal/60 transition-colors group overflow-hidden">
+                        <div class="aspect-[3/4] w-full">
+                            {#if game.background_image}
+                                <img
+                                    src={game.background_image}
+                                    alt={game.name}
+                                    class="w-full h-full object-cover opacity-85 group-hover:opacity-100 transition-opacity"
+                                />
+                            {:else}
+                                <GameCoverFallback name={game.name} />
+                            {/if}
+                        </div>
+                        <p class="font-sans font-medium text-xs text-ink-dim group-hover:text-ink truncate p-2 transition-colors">{game.name}</p>
                     </a>
                 {/each}
             </div>

@@ -80,12 +80,15 @@
             <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-5 mb-14">
                 {#each result.owned as game}
                     <div class="relative group">
-                        <a href="/game/{game.slug}" class="card-cut block aspect-[3/4] bg-panel-2 border border-line hover:border-signal/60 transition-colors overflow-hidden">
-                            {#if game.background_image}
-                                <img src={game.background_image} alt={game.name} class="w-full h-full object-cover opacity-85 group-hover:opacity-100 transition-opacity" />
-                            {:else}
-                                <GameCoverFallback name={game.name} />
-                            {/if}
+                        <a href="/game/{game.slug}" class="card-cut block bg-panel-2 border border-line hover:border-signal/60 transition-colors overflow-hidden">
+                            <div class="aspect-[3/4] w-full relative">
+                                {#if game.background_image}
+                                    <img src={game.background_image} alt={game.name} class="w-full h-full object-cover opacity-85 group-hover:opacity-100 transition-opacity" />
+                                {:else}
+                                    <GameCoverFallback name={game.name} />
+                                {/if}
+                            </div>
+                            <p class="font-sans font-medium text-xs text-ink-dim group-hover:text-ink truncate p-2 transition-colors">{game.name}</p>
                         </a>
                         <button onclick={() => toggleOwned(game.slug)}
                                 class="btn-cut absolute top-2 right-2 bg-void/80 hover:bg-signal border border-hair hover:border-transparent text-ink-dim hover:text-signal-ink font-mono text-[9px] font-medium uppercase tracking-widest px-3 py-2 transition-colors">
@@ -103,12 +106,15 @@
                 <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-5">
                     {#each result.suggestions as game}
                         <div class="flex flex-col gap-2">
-                            <a href="/game/{game.slug}" class="card-cut block aspect-[3/4] bg-panel-2 border border-line hover:border-signal/60 transition-colors overflow-hidden">
-                                {#if game.background_image}
-                                    <img src={game.background_image} alt={game.name} class="w-full h-full object-cover opacity-85 hover:opacity-100 transition-opacity" />
-                                {:else}
-                                    <GameCoverFallback name={game.name} />
-                                {/if}
+                            <a href="/game/{game.slug}" class="card-cut block bg-panel-2 border border-line hover:border-signal/60 transition-colors overflow-hidden group">
+                                <div class="aspect-[3/4] w-full">
+                                    {#if game.background_image}
+                                        <img src={game.background_image} alt={game.name} class="w-full h-full object-cover opacity-85 group-hover:opacity-100 transition-opacity" />
+                                    {:else}
+                                        <GameCoverFallback name={game.name} />
+                                    {/if}
+                                </div>
+                                <p class="font-sans font-medium text-xs text-ink-dim group-hover:text-ink truncate p-2 transition-colors">{game.name}</p>
                             </a>
                             {#if game.buyLinks?.amazon || game.buyLinks?.ebay}
                                 <div class="flex gap-1 font-mono">
