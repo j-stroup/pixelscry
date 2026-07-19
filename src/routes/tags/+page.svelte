@@ -35,39 +35,33 @@
 
 <SeoHead title={pageTitle} description={pageDescription} path="/tags" jsonLd={itemListSchema} />
 
-<main class="min-h-screen bg-black text-zinc-100 relative selection:bg-fuchsia-500/30 pt-32 pb-24 px-6">
-    <div class="absolute top-0 left-0 w-full h-[600px] pointer-events-none z-0"
-         style="background: radial-gradient(ellipse at top, rgba(217,70,239, 0.15) 0%, transparent 70%);">
-    </div>
-
+<main class="min-h-screen bg-void text-ink relative selection:bg-signal/30 pt-28 pb-24 px-6">
     <div class="max-w-5xl mx-auto relative z-10">
-        <a href="/" class="text-fuchsia-500 text-[10px] font-black tracking-[0.2em] uppercase mb-8 inline-block hover:underline">
-            &larr; Back to Search
+        <a href="/" class="font-mono text-signal text-[10px] font-medium tracking-[0.2em] uppercase mb-8 inline-block hover:opacity-80">
+            &larr; Back to search
         </a>
 
-        <div class="mb-12">
-            <h1 class="text-4xl md:text-6xl lg:text-7xl font-black tracking-tighter uppercase text-white drop-shadow-lg mb-4">
-                Browse by <span class="text-zinc-600">Tag</span>
+        <div class="mb-10">
+            <h1 class="font-display text-4xl md:text-6xl lg:text-7xl leading-[0.92] uppercase text-ink mb-3">
+                Browse by <span class="text-ink-faint">Tag</span>
             </h1>
-            <p class="text-fuchsia-500 text-sm font-black tracking-[0.2em] uppercase">
+            <p class="font-mono text-signal text-[11px] font-medium tracking-[0.2em] uppercase">
                 {data.tags.length} tags in the archive
             </p>
         </div>
 
         {#if data.tags.length === 0}
-            <div class="bg-zinc-900/40 backdrop-blur-xl border border-white/10 rounded-2xl p-12 text-center shadow-2xl">
-                <p class="text-zinc-300 text-xl font-medium">No tags yet — browse more games to populate the cache!</p>
+            <div class="chassis-cut-sm bg-panel border border-line p-12 text-center">
+                <p class="text-ink-dim text-lg font-medium">No tags yet — browse more games to populate the cache.</p>
             </div>
         {:else}
-            <div class="bg-zinc-950/50 border border-white/5 rounded-2xl p-8 backdrop-blur-sm">
-                <div class="flex flex-wrap gap-2.5">
-                    {#each data.tags as tag}
-                        <a href="/category/tag/{encodeURIComponent(tag.name)}"
-                           class="{sizeClass(tag.count, maxCount)} bg-zinc-900/80 hover:bg-fuchsia-500 border border-white/10 hover:border-transparent text-zinc-400 hover:text-white font-bold rounded-lg transition-colors duration-300">
-                            {tag.name} <span class="opacity-50">({tag.count})</span>
-                        </a>
-                    {/each}
-                </div>
+            <div class="flex flex-wrap gap-2.5 font-mono">
+                {#each data.tags as tag}
+                    <a href="/category/tag/{encodeURIComponent(tag.name)}"
+                       class="chip-cut {sizeClass(tag.count, maxCount)} bg-panel hover:bg-signal border border-hair hover:border-transparent text-ink-dim hover:text-signal-ink font-medium transition-colors duration-300">
+                        {tag.name} <span class="opacity-60">({tag.count})</span>
+                    </a>
+                {/each}
             </div>
         {/if}
     </div>

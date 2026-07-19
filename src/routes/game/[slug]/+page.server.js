@@ -11,6 +11,7 @@ export async function load({ params, setHeaders }) {
 
     try {
         let gameData;
+        let accentColor;
 
         // ==============================================================
         // STEP 1: THE LOCAL CHECK (Fast Path)
@@ -22,6 +23,7 @@ export async function load({ params, setHeaders }) {
         if (localGame) {
             // Parse the stored string back into a JSON object and serve it instantly
             gameData = JSON.parse(localGame.rawg_data);
+            accentColor = localGame.accentColor;
         } else {
             // ==============================================================
             // STEP 2: THE API FETCH (Cache Miss)
@@ -33,7 +35,8 @@ export async function load({ params, setHeaders }) {
             // ==============================================================
             // STEP 3: THE INCREMENTAL SAVE
             // ==============================================================
-            await saveGameToCache(prisma, gameData, slug);
+            const saved = await saveGameToCache(prisma, gameData, slug);
+            accentColor = saved.accentColor;
         }
 
         // "More like this": other cached games sharing a genre, computed
@@ -56,6 +59,7 @@ export async function load({ params, setHeaders }) {
         return {
             success: true,
             game: gameData,
+            accentColor: accentColor || '255, 176, 32',
             descriptionHtml: sanitizeDescription(gameData.description),
             descriptionText: htmlToPlainText(gameData.description) || gameData.description_raw || '',
             moreLikeThis,

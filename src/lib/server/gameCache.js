@@ -1,8 +1,11 @@
+import { extractAccentColor } from './accentColor.js';
+
 // Pure (no $env import) so it can be called from both app routes and
 // standalone scripts, each passing in their own PrismaClient instance.
 export async function saveGameToCache(prisma, gameData, fallbackSlug) {
     const slug = gameData.slug || fallbackSlug;
     const name = gameData.name || 'Unknown Title';
+    const accentColor = await extractAccentColor(gameData.background_image);
 
     const genreConnects = (gameData.genres || []).map((genre) => ({
         where: { nameLower: genre.name.toLowerCase() },
@@ -35,6 +38,7 @@ export async function saveGameToCache(prisma, gameData, fallbackSlug) {
             slug,
             name,
             rawg_data: JSON.stringify(gameData),
+            accentColor,
             genres: { connectOrCreate: genreConnects },
             platforms: { connectOrCreate: platformConnects },
             tags: { connectOrCreate: tagConnects }
@@ -42,6 +46,7 @@ export async function saveGameToCache(prisma, gameData, fallbackSlug) {
         update: {
             name,
             rawg_data: JSON.stringify(gameData),
+            accentColor,
             genres: { connectOrCreate: genreConnects },
             platforms: { connectOrCreate: platformConnects },
             tags: { connectOrCreate: tagConnects }

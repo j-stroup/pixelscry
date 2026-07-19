@@ -11,6 +11,12 @@ model Game {
   slug        String     @id
   name        String
   rawg_data   String
+  // "r, g, b" sampled from the cover art at cache time — drives the
+  // per-game accent color on the game detail page. Computed server-side
+  // (see accentColor.js) rather than client-side canvas sampling, which
+  // proved unreliable against RAWG's CDN (cross-origin image loads would
+  // silently fail depending on cache state).
+  accentColor String?
   lastUpdated DateTime   @updatedAt
   genres      Genre[]
   platforms   Platform[]

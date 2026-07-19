@@ -18,25 +18,28 @@
     });
 </script>
 
-<header class="sticky top-0 z-50 bg-black/85 backdrop-blur-xl border-b border-white/10">
+<header class="sticky top-0 z-50 bg-void/95 backdrop-blur-sm border-b border-line">
     <div class="max-w-7xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
-        <a href="/" class="text-lg font-black text-transparent bg-clip-text bg-gradient-to-br from-fuchsia-400 to-purple-500 tracking-tighter uppercase shrink-0">
-            PixelScry
+        <a href="/" class="font-display text-2xl tracking-wide uppercase shrink-0 text-ink">
+            Pixel<span class="text-signal">Scry</span>
         </a>
 
-        <nav class="hidden md:flex items-center gap-7">
+        <nav class="hidden md:flex items-center gap-7 font-mono">
             {#each links as link}
                 <a href={link.href}
-                   class="text-[11px] font-black uppercase tracking-[0.15em] transition-colors
-                          {currentPath === link.href ? 'text-fuchsia-400' : 'text-zinc-400 hover:text-fuchsia-400'}">
+                   class="relative text-[11px] font-medium uppercase tracking-[0.15em] transition-colors py-1
+                          {currentPath === link.href ? 'text-signal' : 'text-ink-dim hover:text-ink'}">
                     {link.label}
+                    {#if currentPath === link.href}
+                        <span class="absolute -bottom-1 left-0 right-0 h-[2px] bg-signal"></span>
+                    {/if}
                 </a>
             {/each}
         </nav>
 
         <button
             onclick={() => (mobileOpen = !mobileOpen)}
-            class="md:hidden text-zinc-400 hover:text-white p-2.5 -mr-2.5"
+            class="md:hidden text-ink-dim hover:text-ink p-2.5 -mr-2.5"
             aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={mobileOpen}
         >
@@ -53,11 +56,11 @@
     </div>
 
     {#if mobileOpen}
-        <nav class="md:hidden flex flex-col border-t border-white/10 px-4 py-3">
+        <nav class="md:hidden flex flex-col border-t border-line px-4 py-3 font-mono">
             {#each links as link}
                 <a href={link.href}
-                   class="py-3 text-sm font-black uppercase tracking-[0.15em] border-b border-white/5 last:border-0
-                          {currentPath === link.href ? 'text-fuchsia-400' : 'text-zinc-300'}">
+                   class="py-3 text-sm font-medium uppercase tracking-[0.15em] border-b border-hair last:border-0
+                          {currentPath === link.href ? 'text-signal' : 'text-ink-dim'}">
                     {link.label}
                 </a>
             {/each}

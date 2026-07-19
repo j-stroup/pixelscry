@@ -43,35 +43,31 @@
 
 <SeoHead title={pageTitle} description={pageDescription} path={canonicalPath} jsonLd={itemListSchema} />
 
-<main class="min-h-screen bg-black text-zinc-100 relative selection:bg-fuchsia-500/30 pt-32 pb-24 px-6">
-    
-    <div class="absolute top-0 left-0 w-full h-[600px] pointer-events-none z-0"
-         style="background: radial-gradient(ellipse at top, rgba(217,70,239, 0.15) 0%, transparent 70%);">
-    </div>
+<main class="min-h-screen bg-void text-ink relative selection:bg-signal/30 pt-28 pb-24 px-6">
 
     <div class="max-w-7xl mx-auto relative z-10">
-        
-        <a href="/" class="text-fuchsia-500 text-[10px] font-black tracking-[0.2em] uppercase mb-8 inline-block hover:underline">
-            &larr; Back to Search
+
+        <a href="/" class="font-mono text-signal text-[10px] font-medium tracking-[0.2em] uppercase mb-8 inline-block hover:opacity-80">
+            &larr; Back to search
         </a>
 
-        <div class="mb-12">
-            <h1 class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black tracking-tighter uppercase text-white drop-shadow-lg mb-4 capitalize">
-                {data.category.split(':')[1]} <span class="text-zinc-600">Games</span>
-            </h1>
-            <p class="text-fuchsia-500 text-sm font-black tracking-[0.2em] uppercase">
+        <div class="mb-10">
+            <p class="font-mono text-signal text-[11px] font-medium tracking-[0.2em] uppercase mb-2">
                 Exploring by {data.category.split(':')[0]}
             </p>
+            <h1 class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[0.92] uppercase text-ink" style="text-wrap: balance;">
+                {data.category.split(':')[1]} <span class="text-ink-faint">Games</span>
+            </h1>
         </div>
 
         {#if data.facets?.length > 0}
             <div class="mb-10">
-                <span class="text-zinc-600 text-[9px] font-black uppercase tracking-widest">Filter by {facetLabel}</span>
-                <div class="mt-3 flex flex-wrap gap-2">
+                <span class="font-mono text-ink-faint text-[9px] font-medium uppercase tracking-widest">Filter by {facetLabel}</span>
+                <div class="mt-3 flex flex-wrap gap-2 font-mono">
                     {#each data.facets.slice(0, 12) as facet}
                         <a href={facetHref(facet.name)}
-                           class="inline-flex items-center min-h-[44px] bg-zinc-900/80 hover:bg-fuchsia-500 border border-white/10 hover:border-transparent text-zinc-400 hover:text-white text-[10px] font-bold uppercase tracking-widest px-3.5 rounded-lg transition-colors duration-300">
-                            {facet.name} <span class="opacity-50 ml-1">({facet.count})</span>
+                           class="chip-cut inline-flex items-center min-h-[44px] bg-panel hover:bg-signal border border-hair hover:border-transparent text-ink-dim hover:text-signal-ink text-[10px] font-medium uppercase tracking-widest px-3.5 transition-colors">
+                            {facet.name} <span class="opacity-60 ml-1">({facet.count})</span>
                         </a>
                     {/each}
                 </div>
@@ -79,27 +75,25 @@
         {/if}
 
         {#if data.games.length === 0}
-            <div class="bg-zinc-900/40 backdrop-blur-xl border border-white/10 rounded-2xl p-12 text-center shadow-2xl">
-                <p class="text-zinc-300 text-xl font-medium">No games found in your local archive for this category yet.</p>
-                <p class="text-zinc-600 mt-2 font-bold uppercase tracking-widest text-xs">Browse more games to populate the cache!</p>
+            <div class="chassis-cut-sm bg-panel border border-line p-12 text-center">
+                <p class="text-ink-dim text-lg font-medium">No games found in the local archive for this category yet.</p>
+                <p class="font-mono text-ink-faint mt-2 uppercase tracking-widest text-xs">Browse more games to populate the cache.</p>
             </div>
         {:else}
-            <div class="bg-zinc-950/50 border border-white/5 rounded-2xl p-6 backdrop-blur-sm">
-                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
-                    {#each data.games as game}
-                        <a href="/game/{game.slug}" class="aspect-[3/4] bg-zinc-900 rounded-xl overflow-hidden border border-white/10 hover:border-fuchsia-500 hover:shadow-[0_0_30px_rgba(217,70,239,0.3)] hover:-translate-y-1 transition-all duration-300 group relative">
-                            {#if game.background_image}
-                                <img
-                                    src={game.background_image}
-                                    alt={game.name}
-                                    class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
-                                />
-                            {:else}
-                                <GameCoverFallback name={game.name} />
-                            {/if}
-                        </a>
-                    {/each}
-                </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-5">
+                {#each data.games as game}
+                    <a href="/game/{game.slug}" class="card-cut aspect-[3/4] bg-panel-2 border border-line hover:border-signal/60 transition-colors group relative overflow-hidden">
+                        {#if game.background_image}
+                            <img
+                                src={game.background_image}
+                                alt={game.name}
+                                class="w-full h-full object-cover opacity-85 group-hover:opacity-100 transition-opacity"
+                            />
+                        {:else}
+                            <GameCoverFallback name={game.name} />
+                        {/if}
+                    </a>
+                {/each}
             </div>
         {/if}
     </div>
