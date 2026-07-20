@@ -227,6 +227,39 @@
                 </div>
             </div>
 
+            {#if data.ebayListings?.length > 0}
+                <div class="flex items-center justify-between mt-12 mb-4 pb-3 border-b border-line">
+                    <p class="font-mono text-[11px] tracking-[0.14em] uppercase text-ink-faint">Live listings on eBay</p>
+                    {#if data.buyLinks?.ebay}
+                        <a href={data.buyLinks.ebay} target="_blank" rel="sponsored noopener"
+                           class="font-mono text-[10px] tracking-[0.1em] uppercase text-accent hover:opacity-80">
+                            See all &rarr;
+                        </a>
+                    {/if}
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                    {#each data.ebayListings as item}
+                        <a href={item.url} target="_blank" rel="sponsored noopener"
+                           class="card-cut block bg-panel-2 border border-line hover:border-accent/60 transition-colors group overflow-hidden">
+                            <div class="aspect-[3/4] w-full bg-panel">
+                                {#if item.image}
+                                    <img src={item.image} alt={item.title} class="w-full h-full object-cover opacity-85 group-hover:opacity-100 transition-opacity" />
+                                {:else}
+                                    <GameCoverFallback name={item.title} />
+                                {/if}
+                            </div>
+                            <p class="font-sans font-medium text-xs text-ink-dim group-hover:text-ink truncate px-2 pt-2 transition-colors">{item.title}</p>
+                            <p class="font-mono text-[11px] font-medium text-accent px-2 pb-2">
+                                {item.price ? `${item.price.currency} ${item.price.value}` : 'See price'}
+                            </p>
+                        </a>
+                    {/each}
+                </div>
+                <p class="font-mono text-ink-faint text-[10px] mt-3 tracking-wide">
+                    Sponsored — PixelScry may earn a commission from qualifying eBay purchases made through these links.
+                </p>
+            {/if}
+
             {#if data.moreLikeThis?.length > 0}
                 <p class="font-mono text-[11px] tracking-[0.14em] uppercase text-ink-faint mt-12 mb-4 pb-3 border-b border-line">More like this</p>
                 <div class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">

@@ -1,6 +1,7 @@
 import { AMAZON_ASSOCIATE_TAG, EBAY_CAMPAIGN_ID } from '$env/static/private';
 import { prisma } from '$lib/server/db.js';
 import { rawg } from '$lib/server/rawg.js';
+import { ebay } from '$lib/server/ebay.js';
 import { saveGameToCache } from '$lib/server/gameCache.js';
 import { buildBuyLinks } from '$lib/server/affiliateLinks.js';
 import { sanitizeDescription, htmlToPlainText } from '$lib/server/sanitizeDescription.js';
@@ -56,6 +57,18 @@ export async function load({ params, setHeaders }) {
             moreLikeThis = related.map((g) => JSON.parse(g.rawg_data));
         }
 
+        // Live eBay listing previews are a nice-to-have, not load-bearing —
+        // any failure (bad credentials, sandbox quirks, network hiccup)
+        // just falls back to the plain search link below.
+        let ebayListings = [];
+        if (ebay) {
+            try {
+                ebayListings = await ebay.searchItems({ query: gameData.name, limit: 6 });
+            } catch (error) {
+                console.error(`eBay listing search failed for "${gameData.name}":`, error.message);
+            }
+        }
+
         return {
             success: true,
             game: gameData,
@@ -63,6 +76,7 @@ export async function load({ params, setHeaders }) {
             descriptionHtml: sanitizeDescription(gameData.description),
             descriptionText: htmlToPlainText(gameData.description) || gameData.description_raw || '',
             moreLikeThis,
+            ebayListings,
             buyLinks: buildBuyLinks({
                 amazonTag: AMAZON_ASSOCIATE_TAG,
                 ebayCampaignId: EBAY_CAMPAIGN_ID,
