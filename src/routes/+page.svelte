@@ -1,8 +1,10 @@
 <script>
+    import { goto } from '$app/navigation';
     import { getDisplayRating, getReleaseYear } from '$lib/gameDisplay.js';
     import GameCoverFallback from '$lib/components/GameCoverFallback.svelte';
     import SeoHead from '$lib/components/SeoHead.svelte';
     import { buildWebsiteSchema } from '$lib/jsonld.js';
+    import { PLATFORM_OPTIONS, GENRE_OPTIONS, YEAR_OPTIONS, SORT_OPTIONS } from '$lib/filterOptions.js';
 
     let { data } = $props();
 
@@ -22,8 +24,20 @@
         if (s.q) params.set('q', s.q);
         if (s.platform) params.set('platform', s.platform);
         if (s.genre) params.set('genre', s.genre);
+        if (s.sort) params.set('sort', s.sort);
         params.set('page', targetPage);
         return `/?${params.toString()}`;
+    }
+
+    function handleSortChange(event) {
+        const params = new URLSearchParams(window.location.search);
+        if (event.target.value) {
+            params.set('sort', event.target.value);
+        } else {
+            params.delete('sort');
+        }
+        params.delete('page');
+        goto(`/?${params.toString()}`);
     }
 
     // Bind the input to this variable
@@ -47,6 +61,22 @@
 
         // Reset the dropdown back to its default placeholder
         event.target.value = "";
+    }
+
+    // Checkbox equivalent of appendFilter — adds/removes a boolean token
+    // (e.g. "dlc:no") instead of setting a value.
+    function toggleFilter(event, prefix, value) {
+        const regex = new RegExp(`${prefix}:[^ ]+`);
+
+        if (event.target.checked) {
+            if (regex.test(searchQuery)) {
+                searchQuery = searchQuery.replace(regex, `${prefix}:${value}`);
+            } else {
+                searchQuery = `${searchQuery} ${prefix}:${value}`.trim();
+            }
+        } else {
+            searchQuery = searchQuery.replace(regex, '').trim();
+        }
     }
 </script>
 
@@ -88,10 +118,9 @@
                     class="chip-cut bg-panel-2 border border-hair text-ink-dim text-xs font-medium px-3 py-1.5 outline-none focus:border-signal hover:text-ink transition-colors appearance-none cursor-pointer"
                 >
                     <option value="">+ Platform</option>
-                    <option value="ps5">PlayStation 5</option>
-                    <option value="xbox">Xbox Series X</option>
-                    <option value="switch">Nintendo Switch</option>
-                    <option value="pc">PC</option>
+                    {#each PLATFORM_OPTIONS as p}
+                        <option value={p.value}>{p.label}</option>
+                    {/each}
                 </select>
 
                 <select
@@ -99,10 +128,9 @@
                     class="chip-cut bg-panel-2 border border-hair text-ink-dim text-xs font-medium px-3 py-1.5 outline-none focus:border-signal hover:text-ink transition-colors appearance-none cursor-pointer"
                 >
                     <option value="">+ Genre</option>
-                    <option value="rpg">RPG</option>
-                    <option value="shooter">Shooter</option>
-                    <option value="platform">Platformer</option>
-                    <option value="indie">Indie</option>
+                    {#each GENRE_OPTIONS as g}
+                        <option value={g.value}>{g.label}</option>
+                    {/each}
                 </select>
 
                 <select
@@ -114,11 +142,50 @@
                     <option value=">80">Great (80+)</option>
                     <option value=">70">Good (70+)</option>
                 </select>
+
+                <select
+                    onchange={(e) => appendFilter(e, 'y')}
+                    class="chip-cut bg-panel-2 border border-hair text-ink-dim text-xs font-medium px-3 py-1.5 outline-none focus:border-signal hover:text-ink transition-colors appearance-none cursor-pointer"
+                >
+                    <option value="">+ Year</option>
+                    {#each YEAR_OPTIONS as y}
+                        <option value={y.value}>{y.label}</option>
+                    {/each}
+                </select>
+
+                {#if data.popularTags?.length > 0}
+                    <select
+                        onchange={(e) => appendFilter(e, 'tag')}
+                        class="chip-cut bg-panel-2 border border-hair text-ink-dim text-xs font-medium px-3 py-1.5 outline-none focus:border-signal hover:text-ink transition-colors appearance-none cursor-pointer"
+                    >
+                        <option value="">+ Tag</option>
+                        {#each data.popularTags as t}
+                            <option value={t.slug}>{t.name}</option>
+                        {/each}
+                    </select>
+                {/if}
+
+                <label class="chip-cut flex items-center gap-1.5 bg-panel-2 border border-hair text-ink-dim text-xs font-medium px-3 py-1.5 hover:text-ink transition-colors cursor-pointer">
+                    <input type="checkbox" onchange={(e) => toggleFilter(e, 'dlc', 'no')} class="accent-signal" />
+                    Hide DLC
+                </label>
             </div>
         </section>
 
         <div class="max-w-7xl mx-auto relative z-10">
             {#if data.success}
+                <div class="flex justify-end mb-5 font-mono">
+                    <select
+                        value={data.searchState.sort || ''}
+                        onchange={handleSortChange}
+                        class="chip-cut bg-panel-2 border border-hair text-ink-dim text-xs font-medium px-3 py-1.5 outline-none focus:border-signal hover:text-ink transition-colors appearance-none cursor-pointer"
+                    >
+                        <option value="">Sort: {data.searchState.q ? 'Relevance' : 'Highest Rated'}</option>
+                        {#each SORT_OPTIONS as s}
+                            <option value={s.value}>Sort: {s.label}</option>
+                        {/each}
+                    </select>
+                </div>
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-5 md:gap-6">
                     {#each data.games as game}
                     <a href="/game/{game.slug}" data-sveltekit-reload class="card-cut block group relative bg-panel border border-line hover:border-signal/60 transition-colors duration-300 cursor-pointer">

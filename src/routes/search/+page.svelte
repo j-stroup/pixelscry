@@ -1,8 +1,20 @@
 <script>
+    import { goto } from '$app/navigation';
     import GameCoverFallback from '$lib/components/GameCoverFallback.svelte';
     import SeoHead from '$lib/components/SeoHead.svelte';
+    import { SORT_OPTIONS } from '$lib/filterOptions.js';
 
     let { data } = $props();
+
+    function handleSortChange(event) {
+        const params = new URLSearchParams(window.location.search);
+        if (event.target.value) {
+            params.set('sort', event.target.value);
+        } else {
+            params.delete('sort');
+        }
+        goto(`/search?${params.toString()}`);
+    }
 </script>
 
 <SeoHead
@@ -32,6 +44,21 @@
                 {/each}
             </div>
         </div>
+
+        {#if data.results.length > 0}
+            <div class="flex justify-end mb-6 -mt-2 font-mono">
+                <select
+                    value={data.sort || ''}
+                    onchange={handleSortChange}
+                    class="chip-cut bg-panel-2 border border-hair text-ink-dim text-xs font-medium px-3 py-1.5 outline-none focus:border-signal hover:text-ink transition-colors appearance-none cursor-pointer"
+                >
+                    <option value="">Sort: Relevance</option>
+                    {#each SORT_OPTIONS as s}
+                        <option value={s.value}>Sort: {s.label}</option>
+                    {/each}
+                </select>
+            </div>
+        {/if}
 
         {#if data.results.length === 0}
             <div class="text-center py-20 bg-panel border border-hair">
