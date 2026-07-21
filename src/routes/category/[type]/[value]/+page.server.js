@@ -1,6 +1,12 @@
 import { prisma } from '$lib/server/db.js';
+import { getBestOfScore, MAX_RANKED_GAMES } from '$lib/gameDisplay.js';
 
-const RELATION_MODELS = { genre: 'genre', platform: 'platform', tag: 'tag' };
+const RELATION_MODELS = { genre: 'genre', platform: 'platform', tag: 'tag', publisher: 'publisher' };
+
+// Genre/platform/tag pages are ranked "Best of" ledgers; publisher pages
+// stay a plain browsable filmography — "best Electronic Arts games" isn't
+// really what a publisher page is for.
+const RANKED_TYPES = new Set(['genre', 'platform', 'tag']);
 
 export async function load({ params }) {
     const { type, value } = params;
@@ -21,7 +27,7 @@ export async function load({ params }) {
     }
 
     // Parse the JSON data back into objects and ensure the slug is attached
-    const games = matchedGames.map((g) => {
+    let games = matchedGames.map((g) => {
         const parsedGame = JSON.parse(g.rawg_data);
         parsedGame.slug = g.slug;
         return parsedGame;
@@ -33,12 +39,25 @@ export async function load({ params }) {
     // computed for those two types.
     const facets = computeFacets(type, games);
 
+    const ranked = RANKED_TYPES.has(type);
+    const totalCount = games.length;
+
+    if (ranked) {
+        // Unrated titles sort last rather than being treated as a 0 — a
+        // missing score isn't evidence of a bad game.
+        games = [...games]
+            .sort((a, b) => (getBestOfScore(b) ?? -1) - (getBestOfScore(a) ?? -1))
+            .slice(0, MAX_RANKED_GAMES);
+    }
+
     return {
         category: `${type}: ${value}`,
         type,
         value,
         games,
-        facets
+        facets,
+        ranked,
+        totalCount
     };
 }
 

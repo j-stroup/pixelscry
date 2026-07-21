@@ -8,6 +8,29 @@ export function getDisplayRating(game) {
     return null;
 }
 
+// Used for "Best of" ranked ledgers, where a single game's spotlight badge
+// (getDisplayRating) isn't the right signal — a mediocre-but-reviewed game
+// shouldn't outrank a beloved one just because it's the only score present.
+// Blends both scales (0-100) when both exist, weighted toward the critic
+// score since it's the more standardized measure; falls back to whichever
+// single score is available, same as getDisplayRating.
+const CRITIC_WEIGHT = 0.6;
+const USER_WEIGHT = 0.4;
+
+// A "curated ledger" reads as a shortlist, not an exhaustive dump — every
+// ranked "Best of" page caps its list to this many entries.
+export const MAX_RANKED_GAMES = 30;
+
+export function getBestOfScore(game) {
+    const metacritic = game?.metacritic || null;
+    const userScore = game?.rating ? game.rating * 20 : null;
+
+    if (metacritic && userScore) {
+        return Math.round(metacritic * CRITIC_WEIGHT + userScore * USER_WEIGHT);
+    }
+    return metacritic || userScore || null;
+}
+
 export function getReleaseYear(game) {
     if (!game?.released) return null;
     const year = new Date(game.released).getFullYear();
