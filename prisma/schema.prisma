@@ -21,6 +21,7 @@ model Game {
   genres      Genre[]
   platforms   Platform[]
   tags        Tag[]
+  publishers  Publisher[]
 }
 
 // Normalized so category pages can query by relation instead of
@@ -44,6 +45,13 @@ model Platform {
 // many languages; storing every locale would fragment the same real-world
 // tag into duplicates).
 model Tag {
+  nameLower String @id
+  name      String
+  games     Game[]
+}
+
+// Powers the "all games from this publisher" pages.
+model Publisher {
   nameLower String @id
   name      String
   games     Game[]

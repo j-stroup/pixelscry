@@ -15,7 +15,7 @@
 import { PrismaClient } from '@prisma/client';
 import { PrismaLibSql } from '@prisma/adapter-libsql';
 import { createRawgClient } from '../src/lib/server/rawgClient.js';
-import { saveGameToCache } from '../src/lib/server/gameCache.js';
+import { saveGameToCache, isStale } from '../src/lib/server/gameCache.js';
 
 const adapter = new PrismaLibSql({ url: process.env.DATABASE_URL || 'file:./dev.db' });
 const prisma = new PrismaClient({ adapter });
@@ -69,13 +69,14 @@ async function main() {
     console.log(`Found ${slugs.length} candidate games.`);
 
     let newlyCached = 0;
-    let alreadyCached = 0;
+    let refreshed = 0;
+    let stillFresh = 0;
     let failed = 0;
 
     for (const slug of slugs) {
         const existing = await prisma.game.findUnique({ where: { slug } });
-        if (existing) {
-            alreadyCached++;
+        if (existing && !isStale(existing.lastUpdated)) {
+            stillFresh++;
             continue;
         }
 
@@ -88,8 +89,14 @@ async function main() {
             }
 
             await saveGameToCache(prisma, gameData, slug);
-            newlyCached++;
-            console.log(`[${newlyCached}] cached ${slug}`);
+
+            if (existing) {
+                refreshed++;
+                console.log(`[refresh ${refreshed}] updated ${slug}`);
+            } else {
+                newlyCached++;
+                console.log(`[${newlyCached}] cached ${slug}`);
+            }
         } catch (error) {
             failed++;
             console.error(`Failed to cache ${slug}:`, error.message);
@@ -98,8 +105,10 @@ async function main() {
         await sleep(REQUEST_DELAY_MS);
     }
 
-    const requestsUsed = Math.ceil(slugs.length / PAGE_SIZE) + newlyCached + failed;
-    console.log(`Done. Newly cached: ${newlyCached}, already had: ${alreadyCached}, failed: ${failed}.`);
+    const requestsUsed = Math.ceil(slugs.length / PAGE_SIZE) + newlyCached + refreshed + failed;
+    console.log(
+        `Done. Newly cached: ${newlyCached}, refreshed (30+ days stale): ${refreshed}, still fresh: ${stillFresh}, failed: ${failed}.`
+    );
     console.log(`Approx. RAWG requests used this run: ${requestsUsed}.`);
     await prisma.$disconnect();
 }

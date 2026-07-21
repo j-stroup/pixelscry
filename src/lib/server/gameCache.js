@@ -1,5 +1,15 @@
 import { extractAccentColor } from './accentColor.js';
 
+// A cached game older than this is served as-is but triggers a
+// background-free, synchronous refresh from RAWG on next visit — keeps
+// scores/descriptions/art from going permanently stale without re-fetching
+// on every single page load.
+const STALE_AFTER_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
+
+export function isStale(lastUpdated) {
+    return Date.now() - new Date(lastUpdated).getTime() > STALE_AFTER_MS;
+}
+
 // Pure (no $env import) so it can be called from both app routes and
 // standalone scripts, each passing in their own PrismaClient instance.
 export async function saveGameToCache(prisma, gameData, fallbackSlug) {
@@ -32,6 +42,14 @@ export async function saveGameToCache(prisma, gameData, fallbackSlug) {
             create: { nameLower: tag.name.toLowerCase(), name: tag.name }
         }));
 
+    const publisherConnects = (gameData.publishers || [])
+        .map((publisher) => publisher.name)
+        .filter(Boolean)
+        .map((publisherName) => ({
+            where: { nameLower: publisherName.toLowerCase() },
+            create: { nameLower: publisherName.toLowerCase(), name: publisherName }
+        }));
+
     return prisma.game.upsert({
         where: { slug },
         create: {
@@ -41,7 +59,8 @@ export async function saveGameToCache(prisma, gameData, fallbackSlug) {
             accentColor,
             genres: { connectOrCreate: genreConnects },
             platforms: { connectOrCreate: platformConnects },
-            tags: { connectOrCreate: tagConnects }
+            tags: { connectOrCreate: tagConnects },
+            publishers: { connectOrCreate: publisherConnects }
         },
         update: {
             name,
@@ -49,7 +68,8 @@ export async function saveGameToCache(prisma, gameData, fallbackSlug) {
             accentColor,
             genres: { connectOrCreate: genreConnects },
             platforms: { connectOrCreate: platformConnects },
-            tags: { connectOrCreate: tagConnects }
+            tags: { connectOrCreate: tagConnects },
+            publishers: { connectOrCreate: publisherConnects }
         }
     });
 }

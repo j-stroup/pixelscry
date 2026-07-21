@@ -33,6 +33,15 @@
                 })
               : 'Unknown'
     );
+    let lastUpdatedLabel = $derived(
+        data.lastUpdated
+            ? new Date(data.lastUpdated).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric'
+              })
+            : null
+    );
 
     let canonicalPath = $derived(`/game/${game.slug}`);
     let metaDescription = $derived.by(() => {
@@ -108,8 +117,11 @@
                             {game.name}
                         </h1>
 
-                        <p class="font-mono text-[13px] text-ink-dim mb-6">
+                        <p class="font-mono text-[13px] text-ink-dim mb-1">
                             <span class="text-ink font-medium">{developer}</span> &nbsp;/&nbsp; {releaseLabel} &nbsp;/&nbsp; Rated {esrb ?? 'Unrated'}
+                        </p>
+                        <p class="font-mono text-[10px] text-ink-faint mb-6 tracking-wide">
+                            {lastUpdatedLabel ? `Data last updated ${lastUpdatedLabel}` : ' '}
                         </p>
 
                         <div class="mb-6">
@@ -148,7 +160,14 @@
                             </div>
                             <div class="spec-cell p-3 border-hair">
                                 <p class="font-mono text-[9px] tracking-[0.12em] uppercase text-ink-faint mb-1">Publisher</p>
-                                <p class="font-mono text-sm font-medium text-ink truncate">{publisher}</p>
+                                {#if publisher !== 'Unknown'}
+                                    <a href="/category/publisher/{encodeURIComponent(publisher)}"
+                                       class="font-mono text-sm font-medium text-ink hover:text-accent truncate block transition-colors">
+                                        {publisher}
+                                    </a>
+                                {:else}
+                                    <p class="font-mono text-sm font-medium text-ink truncate">{publisher}</p>
+                                {/if}
                             </div>
                             <div class="spec-cell p-3 border-hair">
                                 <p class="font-mono text-[9px] tracking-[0.12em] uppercase text-ink-faint mb-1">Time to beat</p>

@@ -4,12 +4,13 @@ import { getPopularTags } from '$lib/server/tags.js';
 import { getPopularGenrePlatformCombos } from '$lib/server/genrePlatformCombos.js';
 
 export async function GET() {
-    const [games, genres, platforms, tags, combos] = await Promise.all([
+    const [games, genres, platforms, tags, combos, publishers] = await Promise.all([
         prisma.game.findMany({ select: { slug: true, lastUpdated: true } }),
         prisma.genre.findMany({ select: { name: true } }),
         prisma.platform.findMany({ select: { name: true } }),
         getPopularTags(prisma),
-        getPopularGenrePlatformCombos(prisma)
+        getPopularGenrePlatformCombos(prisma),
+        prisma.publisher.findMany({ select: { name: true } })
     ]);
 
     const gameUrls = games.map(
@@ -49,6 +50,15 @@ export async function GET() {
         </url>`
     );
 
+    const publisherUrls = publishers.map(
+        (publisher) => `
+        <url>
+            <loc>${SITE_URL}/category/publisher/${encodeURIComponent(publisher.name)}</loc>
+            <changefreq>daily</changefreq>
+            <priority>0.5</priority>
+        </url>`
+    );
+
     const comboUrls = combos.map(
         (combo) => `
         <url>
@@ -75,7 +85,7 @@ export async function GET() {
             <changefreq>daily</changefreq>
             <priority>0.5</priority>
         </url>
-        ${[...genreUrls, ...platformUrls, ...tagUrls, ...comboUrls, ...gameUrls].join('')}
+        ${[...genreUrls, ...platformUrls, ...tagUrls, ...publisherUrls, ...comboUrls, ...gameUrls].join('')}
     </urlset>`;
 
     return new Response(body, {
