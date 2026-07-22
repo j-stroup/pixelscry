@@ -93,6 +93,8 @@
 
     <div class="relative z-10">
 
+        <h1 class="sr-only">PixelScry — Discover and Search Video Games by Genre, Platform, and Rating</h1>
+
         <section class="max-w-3xl mx-auto mt-10 mb-14 relative">
             <p class="font-mono text-[11px] tracking-[0.2em] uppercase text-signal text-center mb-3">Search the archive</p>
 
@@ -102,10 +104,11 @@
                     name="q"
                     bind:value={searchQuery}
                     placeholder="Search games, or use the filters below..."
+                    aria-label="Search games"
                     autocomplete="off"
                     class="chassis-cut-sm w-full bg-panel border border-line text-ink placeholder-ink-faint text-base md:text-lg font-medium px-6 py-5 outline-none focus:border-signal transition-colors"
                 />
-                <button type="submit" class="btn-cut absolute right-3 top-1/2 -translate-y-1/2 bg-panel-2 hover:bg-signal text-ink-dim hover:text-signal-ink p-2.5 transition-colors border border-hair hover:border-transparent">
+                <button type="submit" aria-label="Search" class="btn-cut absolute right-3 top-1/2 -translate-y-1/2 bg-panel-2 hover:bg-signal text-ink-dim hover:text-signal-ink p-2.5 transition-colors border border-hair hover:border-transparent">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                 </button>
             </form>
@@ -115,6 +118,7 @@
 
                 <select
                     onchange={(e) => appendFilter(e, 'platform')}
+                    aria-label="Filter by platform"
                     class="chip-cut bg-panel-2 border border-hair text-ink-dim text-xs font-medium px-3 py-1.5 outline-none focus:border-signal hover:text-ink transition-colors appearance-none cursor-pointer"
                 >
                     <option value="">+ Platform</option>
@@ -125,6 +129,7 @@
 
                 <select
                     onchange={(e) => appendFilter(e, 'genre')}
+                    aria-label="Filter by genre"
                     class="chip-cut bg-panel-2 border border-hair text-ink-dim text-xs font-medium px-3 py-1.5 outline-none focus:border-signal hover:text-ink transition-colors appearance-none cursor-pointer"
                 >
                     <option value="">+ Genre</option>
@@ -135,6 +140,7 @@
 
                 <select
                     onchange={(e) => appendFilter(e, 'rating')}
+                    aria-label="Filter by rating"
                     class="chip-cut bg-panel-2 border border-hair text-ink-dim text-xs font-medium px-3 py-1.5 outline-none focus:border-signal hover:text-ink transition-colors appearance-none cursor-pointer"
                 >
                     <option value="">+ Rating</option>
@@ -145,6 +151,7 @@
 
                 <select
                     onchange={(e) => appendFilter(e, 'y')}
+                    aria-label="Filter by year"
                     class="chip-cut bg-panel-2 border border-hair text-ink-dim text-xs font-medium px-3 py-1.5 outline-none focus:border-signal hover:text-ink transition-colors appearance-none cursor-pointer"
                 >
                     <option value="">+ Year</option>
@@ -156,6 +163,7 @@
                 {#if data.popularTags?.length > 0}
                     <select
                         onchange={(e) => appendFilter(e, 'tag')}
+                        aria-label="Filter by tag"
                         class="chip-cut bg-panel-2 border border-hair text-ink-dim text-xs font-medium px-3 py-1.5 outline-none focus:border-signal hover:text-ink transition-colors appearance-none cursor-pointer"
                     >
                         <option value="">+ Tag</option>
@@ -178,6 +186,7 @@
                     <select
                         value={data.searchState.sort || ''}
                         onchange={handleSortChange}
+                        aria-label="Sort games by"
                         class="chip-cut bg-panel-2 border border-hair text-ink-dim text-xs font-medium px-3 py-1.5 outline-none focus:border-signal hover:text-ink transition-colors appearance-none cursor-pointer"
                     >
                         <option value="">Sort: {data.searchState.q ? 'Relevance' : 'Highest Rated'}</option>

@@ -50,6 +50,7 @@
                 <select
                     value={data.sort || ''}
                     onchange={handleSortChange}
+                    aria-label="Sort games by"
                     class="chip-cut bg-panel-2 border border-hair text-ink-dim text-xs font-medium px-3 py-1.5 outline-none focus:border-signal hover:text-ink transition-colors appearance-none cursor-pointer"
                 >
                     <option value="">Sort: Relevance</option>

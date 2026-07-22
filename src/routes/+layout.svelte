@@ -15,11 +15,16 @@
     });
 </script>
 
+<a href="#main-content"
+   class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-signal focus:text-signal-ink focus:px-4 focus:py-2 focus:font-mono focus:text-xs focus:font-medium focus:uppercase focus:tracking-widest">
+    Skip to content
+</a>
+
 <div class="flex flex-col min-h-screen bg-void font-sans selection:bg-signal/30">
 
     <SiteHeader />
 
-    <div class="flex-grow">
+    <div id="main-content" class="flex-grow">
         {@render children()}
     </div>
 

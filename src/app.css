@@ -39,7 +39,10 @@
     --color-line: #2b2d34;
     --color-ink: #eceef2;
     --color-ink-dim: #8a8d97;
-    --color-ink-faint: #55575f;
+    /* Brightened from #55575f — the original failed WCAG AA contrast
+       (~2.5:1) against --color-void/--color-panel; this clears 4.5:1 with
+       margin against both. */
+    --color-ink-faint: #868a94;
     --color-signal: #ffb020;
     --color-signal-ink: #2b1c02;
 
