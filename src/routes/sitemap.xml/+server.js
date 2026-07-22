@@ -81,6 +81,11 @@ export async function GET() {
             <priority>0.3</priority>
         </url>
         <url>
+            <loc>${SITE_URL}/privacy</loc>
+            <changefreq>monthly</changefreq>
+            <priority>0.2</priority>
+        </url>
+        <url>
             <loc>${SITE_URL}/tags</loc>
             <changefreq>daily</changefreq>
             <priority>0.5</priority>

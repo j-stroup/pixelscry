@@ -2,6 +2,7 @@
     import { onNavigate } from '$app/navigation';
     import '../app.css'; // This path is correct for src/app.css
     import SiteHeader from '$lib/components/SiteHeader.svelte';
+    import Analytics from '$lib/components/Analytics.svelte';
     let { children } = $props();
 
     onNavigate((navigation) => {
@@ -14,6 +15,8 @@
         });
     });
 </script>
+
+<Analytics />
 
 <a href="#main-content"
    class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-signal focus:text-signal-ink focus:px-4 focus:py-2 focus:font-mono focus:text-xs focus:font-medium focus:uppercase focus:tracking-widest">
@@ -41,6 +44,7 @@
                 <a href="/tags" class="text-[10px] font-medium uppercase tracking-[0.15em] text-ink-faint hover:text-signal">Browse Tags</a>
                 <a href="/collection" class="text-[10px] font-medium uppercase tracking-[0.15em] text-ink-faint hover:text-signal">My Collection</a>
                 <a href="/about" class="text-[10px] font-medium uppercase tracking-[0.15em] text-ink-faint hover:text-signal">About</a>
+                <a href="/privacy" class="text-[10px] font-medium uppercase tracking-[0.15em] text-ink-faint hover:text-signal">Privacy</a>
             </nav>
 
             <div class="font-mono text-[9px] text-ink-faint font-medium uppercase tracking-widest text-center md:text-right">
