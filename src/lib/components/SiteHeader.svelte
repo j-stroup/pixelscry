@@ -6,6 +6,7 @@
 
     const links = [
         { href: '/', label: 'Search' },
+        { href: '/best', label: 'Best Of' },
         { href: '/tags', label: 'Browse Tags' },
         { href: '/collection', label: 'My Collection' },
         { href: '/about', label: 'About' }

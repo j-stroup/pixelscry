@@ -32,6 +32,7 @@
 
             <nav class="flex gap-8 font-mono">
                 <a href="/" class="text-[10px] font-medium uppercase tracking-[0.15em] text-ink-faint hover:text-signal">Search</a>
+                <a href="/best" class="text-[10px] font-medium uppercase tracking-[0.15em] text-ink-faint hover:text-signal">Best Of</a>
                 <a href="/tags" class="text-[10px] font-medium uppercase tracking-[0.15em] text-ink-faint hover:text-signal">Browse Tags</a>
                 <a href="/collection" class="text-[10px] font-medium uppercase tracking-[0.15em] text-ink-faint hover:text-signal">My Collection</a>
                 <a href="/about" class="text-[10px] font-medium uppercase tracking-[0.15em] text-ink-faint hover:text-signal">About</a>

@@ -85,6 +85,11 @@ export async function GET() {
             <changefreq>daily</changefreq>
             <priority>0.5</priority>
         </url>
+        <url>
+            <loc>${SITE_URL}/best</loc>
+            <changefreq>daily</changefreq>
+            <priority>0.6</priority>
+        </url>
         ${[...genreUrls, ...platformUrls, ...tagUrls, ...publisherUrls, ...comboUrls, ...gameUrls].join('')}
     </urlset>`;
 
