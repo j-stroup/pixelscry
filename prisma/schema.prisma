@@ -17,6 +17,18 @@ model Game {
   // proved unreliable against RAWG's CDN (cross-origin image loads would
   // silently fail depending on cache state).
   accentColor String?
+  // Best-effort name-matched Steam store app — null when no confident
+  // match was found (see steamClient.js findSteamAppId). steamData is a
+  // small JSON blob (price/discount/DLC count) refreshed on the same
+  // cache cycle as everything else; live player count is fetched fresh
+  // on each page view instead, since caching it would be misleading.
+  steamAppId  Int?
+  steamData   String?
+  // Best-effort name-matched Wikipedia article. wikipediaExtract is a
+  // plain-text summary — content is CC BY-SA, so the game page must link
+  // back to wikipediaUrl wherever the extract is shown.
+  wikipediaUrl     String?
+  wikipediaExtract String?
   lastUpdated DateTime   @updatedAt
   genres      Genre[]
   platforms   Platform[]

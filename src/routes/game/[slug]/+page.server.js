@@ -5,6 +5,7 @@ import { ebay } from '$lib/server/ebay.js';
 import { saveGameToCache, isStale } from '$lib/server/gameCache.js';
 import { buildBuyLinks } from '$lib/server/affiliateLinks.js';
 import { sanitizeDescription, htmlToPlainText } from '$lib/server/sanitizeDescription.js';
+import { getCurrentPlayers } from '$lib/server/steamClient.js';
 
 export async function load({ params, setHeaders }) {
     const { slug } = params;
@@ -14,6 +15,10 @@ export async function load({ params, setHeaders }) {
         let gameData;
         let accentColor;
         let lastUpdated;
+        let steamAppId;
+        let steamData;
+        let wikipediaUrl;
+        let wikipediaExtract;
 
         // ==============================================================
         // STEP 1: THE LOCAL CHECK (Fast Path)
@@ -27,6 +32,10 @@ export async function load({ params, setHeaders }) {
             gameData = JSON.parse(localGame.rawg_data);
             accentColor = localGame.accentColor;
             lastUpdated = localGame.lastUpdated;
+            steamAppId = localGame.steamAppId;
+            steamData = localGame.steamData;
+            wikipediaUrl = localGame.wikipediaUrl;
+            wikipediaExtract = localGame.wikipediaExtract;
         } else if (localGame) {
             // ==============================================================
             // STEP 2a: STALE CACHE REFRESH (cached > 30 days ago)
@@ -41,16 +50,28 @@ export async function load({ params, setHeaders }) {
                     gameData = fresh;
                     accentColor = saved.accentColor;
                     lastUpdated = saved.lastUpdated;
+                    steamAppId = saved.steamAppId;
+                    steamData = saved.steamData;
+                    wikipediaUrl = saved.wikipediaUrl;
+                    wikipediaExtract = saved.wikipediaExtract;
                 } else {
                     gameData = JSON.parse(localGame.rawg_data);
                     accentColor = localGame.accentColor;
                     lastUpdated = localGame.lastUpdated;
+                    steamAppId = localGame.steamAppId;
+                    steamData = localGame.steamData;
+                    wikipediaUrl = localGame.wikipediaUrl;
+                    wikipediaExtract = localGame.wikipediaExtract;
                 }
             } catch (error) {
                 console.error(`Failed to refresh stale cache for ${slug}:`, error.message);
                 gameData = JSON.parse(localGame.rawg_data);
                 accentColor = localGame.accentColor;
                 lastUpdated = localGame.lastUpdated;
+                steamAppId = localGame.steamAppId;
+                steamData = localGame.steamData;
+                wikipediaUrl = localGame.wikipediaUrl;
+                wikipediaExtract = localGame.wikipediaExtract;
             }
         } else {
             // ==============================================================
@@ -66,6 +87,10 @@ export async function load({ params, setHeaders }) {
             const saved = await saveGameToCache(prisma, gameData, slug);
             accentColor = saved.accentColor;
             lastUpdated = saved.lastUpdated;
+            steamAppId = saved.steamAppId;
+            steamData = saved.steamData;
+            wikipediaUrl = saved.wikipediaUrl;
+            wikipediaExtract = saved.wikipediaExtract;
         }
 
         // "More like this": other cached games sharing a genre, computed
@@ -97,6 +122,17 @@ export async function load({ params, setHeaders }) {
             }
         }
 
+        // Live Steam player count — deliberately not cached (see
+        // gameCache.js), so it's fetched fresh on every view.
+        let steamPlayers = null;
+        if (steamAppId) {
+            try {
+                steamPlayers = await getCurrentPlayers(steamAppId);
+            } catch (error) {
+                console.error(`Steam player count failed for "${gameData.name}":`, error.message);
+            }
+        }
+
         return {
             success: true,
             game: gameData,
@@ -106,6 +142,10 @@ export async function load({ params, setHeaders }) {
             moreLikeThis,
             ebayListings,
             lastUpdated: lastUpdated.toISOString(),
+            steam: steamAppId
+                ? { appId: steamAppId, players: steamPlayers, ...(steamData ? JSON.parse(steamData) : {}) }
+                : null,
+            wikipedia: wikipediaExtract ? { url: wikipediaUrl, extract: wikipediaExtract } : null,
             buyLinks: buildBuyLinks({
                 amazonTag: AMAZON_ASSOCIATE_TAG,
                 ebayCampaignId: EBAY_CAMPAIGN_ID,

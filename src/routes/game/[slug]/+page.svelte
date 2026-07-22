@@ -153,6 +153,30 @@
                             {/if}
                         </div>
 
+                        {#if data.steam}
+                            <div class="chip-cut bg-panel-2 border border-hair px-4 py-3 mb-6 flex flex-wrap items-center gap-x-5 gap-y-1.5 font-mono text-xs">
+                                {#if data.steam.players != null}
+                                    <span class="text-ink-dim">
+                                        <span class="text-accent font-medium">{data.steam.players.toLocaleString()}</span> playing now on Steam
+                                    </span>
+                                {/if}
+                                {#if data.steam.isFree}
+                                    <span class="text-signal font-medium uppercase tracking-wide">Free on Steam</span>
+                                {:else if data.steam.priceFinal}
+                                    <span class="text-ink-dim">
+                                        {data.steam.priceFinal} on Steam{#if data.steam.discountPercent > 0}<span class="text-signal"> (-{data.steam.discountPercent}%)</span>{/if}
+                                    </span>
+                                {/if}
+                                {#if data.steam.dlcCount > 0}
+                                    <span class="text-ink-faint">{data.steam.dlcCount} DLC available</span>
+                                {/if}
+                                <a href="https://store.steampowered.com/app/{data.steam.appId}" target="_blank" rel="noopener"
+                                   class="text-accent hover:opacity-80 sm:ml-auto">
+                                    View on Steam &rarr;
+                                </a>
+                            </div>
+                        {/if}
+
                         <div class="spec-block grid grid-cols-2 sm:grid-cols-4 border border-hair bg-panel-2 mb-6">
                             <div class="spec-cell p-3 border-hair">
                                 <p class="font-mono text-[9px] tracking-[0.12em] uppercase text-ink-faint mb-1">Released</p>
@@ -189,6 +213,18 @@
                             </div>
                         {:else}
                             <p class="text-ink-dim leading-relaxed mb-6">No summary available.</p>
+                        {/if}
+
+                        {#if data.wikipedia}
+                            <div class="mb-6 pl-4 border-l-2 border-hair">
+                                <p class="text-ink-dim text-sm leading-relaxed italic">
+                                    {data.wikipedia.extract}
+                                </p>
+                                <a href={data.wikipedia.url} target="_blank" rel="noopener"
+                                   class="font-mono text-[10px] uppercase tracking-widest text-accent hover:opacity-80 mt-2 inline-block">
+                                    Read more on Wikipedia &rarr;
+                                </a>
+                            </div>
                         {/if}
 
                         {#if alsoKnownAs || ratingBreakdown.length > 0}
