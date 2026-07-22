@@ -79,23 +79,21 @@ export async function GET({ url }) {
 }
 
 function emptyStats() {
-    return { totalOwned: 0, platformCount: 0, genreCount: 0 };
+    return { totalOwned: 0, backlogHours: 0, genreCount: 0 };
 }
 
 function computeStats(ownedGames) {
-    const platforms = new Set();
     const genres = new Set();
+    let backlogHours = 0;
 
     for (const game of ownedGames) {
-        for (const p of game.platforms || []) {
-            if (p.platform?.name) platforms.add(p.platform.name);
-        }
         for (const g of game.genres || []) genres.add(g.name);
+        backlogHours += game.playtime || 0;
     }
 
     return {
         totalOwned: ownedGames.length,
-        platformCount: platforms.size,
+        backlogHours,
         genreCount: genres.size
     };
 }

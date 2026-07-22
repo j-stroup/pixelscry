@@ -26,7 +26,7 @@ export function buildWebsiteSchema() {
     };
 }
 
-export function buildVideoGameSchema(game, url, plainTextDescription) {
+export function buildVideoGameSchema(game, url, plainTextDescription, sameAsUrls = []) {
     const platforms = (game.platforms || []).map((p) => p.platform?.name).filter(Boolean);
     const genres = (game.genres || []).map((g) => g.name);
     const ratingCount =
@@ -52,6 +52,7 @@ export function buildVideoGameSchema(game, url, plainTextDescription) {
         schema.author = { '@type': 'Organization', name: game.developers[0].name };
     }
     if (game.esrb_rating?.name) schema.contentRating = game.esrb_rating.name;
+    if (sameAsUrls.length) schema.sameAs = sameAsUrls;
 
     // Only include real, non-fabricated ratings — Google's guidelines flag
     // aggregateRating without a genuine backing count.

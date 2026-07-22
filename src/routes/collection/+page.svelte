@@ -11,7 +11,7 @@
         const currentSlugs = slugs;
 
         if (currentSlugs.length === 0) {
-            result = { owned: [], suggestions: [], stats: { totalOwned: 0, platformCount: 0, genreCount: 0 } };
+            result = { owned: [], suggestions: [], stats: { totalOwned: 0, backlogHours: 0, genreCount: 0 } };
             loading = false;
             return;
         }
@@ -67,8 +67,8 @@
                     <div class="text-[10px] text-ink-faint font-medium uppercase tracking-widest mt-1">Games owned</div>
                 </div>
                 <div class="chip-cut bg-panel border border-hair px-6 py-4">
-                    <div class="font-display text-3xl text-signal leading-none">{result.stats.platformCount}</div>
-                    <div class="text-[10px] text-ink-faint font-medium uppercase tracking-widest mt-1">Platforms</div>
+                    <div class="font-display text-3xl text-signal leading-none">{result.stats.backlogHours.toLocaleString()}</div>
+                    <div class="text-[10px] text-ink-faint font-medium uppercase tracking-widest mt-1">Hrs to beat</div>
                 </div>
                 <div class="chip-cut bg-panel border border-hair px-6 py-4">
                     <div class="font-display text-3xl text-signal leading-none">{result.stats.genreCount}</div>

@@ -45,16 +45,27 @@
 
     let canonicalPath = $derived(`/game/${game.slug}`);
     let metaDescription = $derived.by(() => {
-        if (data.descriptionText) {
-            const trimmed = data.descriptionText.trim();
+        // RAWG's own description first; when that's thin/missing, the
+        // Wikipedia extract is almost always a better search snippet than
+        // the generic templated fallback below.
+        const source = data.descriptionText || data.wikipedia?.extract;
+        if (source) {
+            const trimmed = source.trim();
             return trimmed.length > 155 ? `${trimmed.slice(0, 155)}…` : trimmed;
         }
         const year = getReleaseYear(game);
         const genreList = (game.genres || []).map((g) => g.name).join(', ');
         return `${game.name}${year ? ` (${year})` : ''}${genreList ? ` — ${genreList}` : ''} on PixelScry.`;
     });
+    let sameAsUrls = $derived(
+        [data.wikipedia?.url, data.steam ? `https://store.steampowered.com/app/${data.steam.appId}` : null].filter(
+            Boolean
+        )
+    );
     let videoGameSchema = $derived(
-        data.success ? buildVideoGameSchema(game, `${SITE_URL}${canonicalPath}`, data.descriptionText) : null
+        data.success
+            ? buildVideoGameSchema(game, `${SITE_URL}${canonicalPath}`, data.descriptionText, sameAsUrls)
+            : null
     );
 
     // Per-game accent, computed server-side from the cover art at cache
