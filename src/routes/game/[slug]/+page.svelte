@@ -94,8 +94,8 @@
 
 <main class="min-h-screen bg-void text-ink selection:bg-signal/30 overflow-x-hidden relative" style="--accent: {themeColor};">
 
-    <div class="absolute top-0 left-0 w-full h-[600px] pointer-events-none z-0"
-         style="background: radial-gradient(ellipse at top, rgba(var(--accent), 0.12) 0%, transparent 70%);">
+    <div class="absolute inset-0 pointer-events-none z-0"
+         style="background-image: radial-gradient(ellipse at top, rgba(var(--accent), 0.12) 0%, transparent 70%), repeating-linear-gradient(115deg, rgba(236, 238, 242, 0.035) 0px, rgba(236, 238, 242, 0.035) 1px, transparent 1px, transparent 5px); background-attachment: fixed, fixed;">
     </div>
 
     {#if data.success}

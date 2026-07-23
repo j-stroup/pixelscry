@@ -11,7 +11,7 @@
     path="/privacy"
 />
 
-<main class="min-h-screen bg-void text-ink relative overflow-x-hidden pt-24 pb-32">
+<main class="min-h-screen text-ink relative overflow-x-hidden pt-24 pb-32">
 
     <div class="relative z-10 max-w-3xl mx-auto px-6">
 

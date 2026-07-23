@@ -1,9 +1,14 @@
 <script>
+    import { page } from '$app/state';
     import { onNavigate } from '$app/navigation';
     import '../app.css'; // This path is correct for src/app.css
     import SiteHeader from '$lib/components/SiteHeader.svelte';
     import Analytics from '$lib/components/Analytics.svelte';
     let { children } = $props();
+
+    // The game detail page draws its own per-title accent glow — skip the
+    // site-wide texture there so the two don't compete.
+    let isGamePage = $derived(page.url.pathname.startsWith('/game/'));
 
     onNavigate((navigation) => {
         if (!document.startViewTransition) return;
@@ -23,7 +28,7 @@
     Skip to content
 </a>
 
-<div class="flex flex-col min-h-screen bg-void font-sans selection:bg-signal/30">
+<div class="flex flex-col min-h-screen font-sans selection:bg-signal/30 {isGamePage ? 'bg-void' : 'page-texture'}">
 
     <SiteHeader />
 
@@ -54,3 +59,23 @@
         </div>
     </footer>
 </div>
+
+<style>
+    /* Option D from the background-texture review: a soft signal-amber
+       glow under fine diagonal scanlines. Fixed attachment so it reads as
+       one ambient backdrop rather than scrolling with tall pages. Not
+       used on the game detail page — see isGamePage above. */
+    .page-texture {
+        background-color: var(--color-void);
+        background-image:
+            radial-gradient(ellipse 900px 500px at 50% -8%, rgba(255, 176, 32, 0.1) 0%, transparent 70%),
+            repeating-linear-gradient(
+                115deg,
+                rgba(236, 238, 242, 0.035) 0px,
+                rgba(236, 238, 242, 0.035) 1px,
+                transparent 1px,
+                transparent 5px
+            );
+        background-attachment: fixed;
+    }
+</style>

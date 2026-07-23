@@ -32,7 +32,7 @@
 
 <SeoHead title={pageTitle} description={pageDescription} path={canonicalPath} jsonLd={itemListSchema} />
 
-<main class="min-h-screen bg-void text-ink relative selection:bg-signal/30 pt-28 pb-24 px-6">
+<main class="min-h-screen text-ink relative selection:bg-signal/30 pt-28 pb-24 px-6">
 
     <div class="max-w-7xl mx-auto relative z-10">
 

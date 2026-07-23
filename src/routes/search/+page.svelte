@@ -24,7 +24,7 @@
     noindex={true}
 />
 
-<main class="min-h-screen bg-void text-ink pt-28 pb-24 px-6 relative selection:bg-signal/30">
+<main class="min-h-screen text-ink pt-28 pb-24 px-6 relative selection:bg-signal/30">
     <div class="max-w-7xl mx-auto relative z-10">
         <div class="mb-10 border-b border-line pb-8">
             <h1 class="font-display text-4xl md:text-6xl leading-[0.92] uppercase text-ink mb-4">

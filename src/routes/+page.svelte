@@ -89,7 +89,7 @@
 
 <svelte:window bind:scrollY={scrollY} />
 
-<main class="min-h-screen bg-void text-ink p-6 font-sans selection:bg-signal/30 relative overflow-x-hidden">
+<main class="min-h-screen text-ink p-6 font-sans selection:bg-signal/30 relative overflow-x-hidden">
 
     <div class="relative z-10">
 

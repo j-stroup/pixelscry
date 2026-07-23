@@ -29,7 +29,7 @@
 
 <SeoHead title={pageTitle} description={pageDescription} path="/best" jsonLd={itemListSchema} />
 
-<main class="min-h-screen bg-void text-ink relative selection:bg-signal/30 pt-28 pb-24 px-6">
+<main class="min-h-screen text-ink relative selection:bg-signal/30 pt-28 pb-24 px-6">
     <div class="max-w-5xl mx-auto relative z-10">
         <a href="/" class="font-mono text-signal text-[10px] font-medium tracking-[0.2em] uppercase mb-8 inline-block hover:opacity-80">
             &larr; Back to search
