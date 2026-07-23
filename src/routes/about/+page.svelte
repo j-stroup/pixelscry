@@ -58,6 +58,14 @@
                 </div>
             </section>
 
+            <section class="chassis-cut-sm bg-panel-2 border border-hair p-8">
+                <h2 class="font-mono text-ink-faint text-[10px] tracking-widest uppercase font-medium mb-4 border-b border-hair pb-3">Open a channel</h2>
+                <p class="text-ink-dim text-sm leading-relaxed">
+                    Questions, feedback, or something broken?
+                    <a href="mailto:contact@pixelscry.com" class="text-signal hover:opacity-80">contact@pixelscry.com</a>
+                </p>
+            </section>
+
         </div>
 
     </div>

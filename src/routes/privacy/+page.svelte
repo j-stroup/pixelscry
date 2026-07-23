@@ -2,7 +2,7 @@
     import SeoHead from '$lib/components/SeoHead.svelte';
 
     const EFFECTIVE_DATE = 'July 22, 2026';
-    const CONTACT_EMAIL = 'contact@pixelscry.com';
+    const PRIVACY_EMAIL = 'privacy@pixelscry.com';
 </script>
 
 <SeoHead
@@ -144,7 +144,7 @@
             <h2>Contact Us</h2>
             <p>
                 Questions about this policy or how the Site handles information can be sent to
-                <a href="mailto:{CONTACT_EMAIL}">{CONTACT_EMAIL}</a>.
+                <a href="mailto:{PRIVACY_EMAIL}">{PRIVACY_EMAIL}</a>.
             </p>
 
         </div>
