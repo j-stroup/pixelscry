@@ -7,7 +7,8 @@ import { parseSearch } from '$lib/searchParser.js';
 export async function load({ url }) {
     const query = url.searchParams.get('q') || '';
     const sort = resolveSortValue(url.searchParams.get('sort'));
-    if (!query) return { results: [], query, parsed: null, sort };
+    const page = parseInt(url.searchParams.get('page')) || 1;
+    if (!query) return { results: [], query, parsed: null, sort, page: 1, hasMore: false };
 
     const parsed = parseSearch(query);
 
@@ -56,6 +57,7 @@ export async function load({ url }) {
 
     try {
         const params = {
+            page,
             page_size: 48,
             search: safeText || undefined,
             dates: dates || undefined,
@@ -78,10 +80,12 @@ export async function load({ url }) {
             results: data.results,
             query,
             parsed, // Returning this so we can show the user how we understood their query
-            sort
+            sort,
+            page,
+            hasMore: Boolean(data.next)
         };
     } catch (error) {
         console.error(error);
-        return { results: [], query, parsed, sort, error: 'Network or server error occurred.' };
+        return { results: [], query, parsed, sort, page, hasMore: false, error: 'Network or server error occurred.' };
     }
 }

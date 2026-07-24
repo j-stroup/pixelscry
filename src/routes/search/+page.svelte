@@ -15,6 +15,16 @@
         }
         goto(`/search?${params.toString()}`);
     }
+
+    // Built from server-provided data rather than window.location, since
+    // this needs to produce real hrefs during SSR (window isn't available there).
+    function getPageUrl(targetPage) {
+        const params = new URLSearchParams();
+        params.set('q', data.query);
+        if (data.sort) params.set('sort', data.sort);
+        params.set('page', targetPage);
+        return `/search?${params.toString()}`;
+    }
 </script>
 
 <SeoHead
@@ -80,6 +90,24 @@
                         <p class="font-sans font-medium text-xs text-ink-dim group-hover:text-ink truncate p-2 transition-colors">{game.name}</p>
                     </a>
                 {/each}
+            </div>
+
+            <div class="mt-16 mb-8 flex items-center justify-center gap-6 font-mono">
+                {#if data.page > 1}
+                    <a href={getPageUrl(data.page - 1)} class="btn-cut bg-panel border border-line hover:border-signal text-ink-dim hover:text-signal font-medium uppercase tracking-[0.2em] text-[10px] px-6 py-3 transition-colors">
+                        &larr; Previous
+                    </a>
+                {/if}
+
+                <span class="text-ink-faint font-medium tracking-widest text-xs uppercase">
+                    Page {data.page}
+                </span>
+
+                {#if data.hasMore}
+                    <a href={getPageUrl(data.page + 1)} class="btn-cut bg-panel border border-signal/50 hover:border-signal text-signal font-medium uppercase tracking-[0.2em] text-[10px] px-6 py-3 transition-colors">
+                        Next Sequence &rarr;
+                    </a>
+                {/if}
             </div>
         {/if}
     </div>
